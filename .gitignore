@@ -2,8 +2,20 @@
 .gradle/
 build/
 
+# Generated files
+bin/
+gen/
+out/
+
 # Local configuration file (sdk path, etc)
 local.properties
+secret.properties
+
+# Signing configuration file
+keystore.properties
+
+# Service Account private key
+service_account_key.json
 
 # Log/OS Files
 *.log
@@ -12,8 +24,10 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
-*.apk
+*.ap_
 output.json
+*.dex
+.navigation/
 
 # IntelliJ
 *.iml
@@ -31,3 +45,5 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+.DS_Store
