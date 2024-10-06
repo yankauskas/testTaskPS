@@ -5,6 +5,6 @@ import java.util.Date
 
 data class RatesSet(val date: Date, val baseCurrency: Currency, val rates: Map<Currency, BigDecimal>) {
     companion object {
-        val EMPTY = RatesSet(Date(), Currency.UNDEFINED, emptyMap())
+        val EMPTY = RatesSet(Date(), Currency(""), emptyMap())
     }
 }

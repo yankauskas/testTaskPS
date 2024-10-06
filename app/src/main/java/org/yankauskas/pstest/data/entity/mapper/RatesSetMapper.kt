@@ -7,10 +7,8 @@ import java.util.Date
 
 class RatesSetMapper : EntityMapper<RatesSetEntity, RatesSet>() {
     override fun transform(entity: RatesSetEntity): RatesSet {
-        val baseCurrency = Currency fromCode entity.base
-        val rates =
-            entity.rates.filterNot { Currency fromCode it.key == Currency.UNDEFINED }.map { (code, rate) -> Currency fromCode code to rate }
-                .toMap()
+        val baseCurrency = Currency(entity.base)
+        val rates = entity.rates.map { (code, rate) -> Currency(code) to rate }.toMap()
         return RatesSet(Date(), baseCurrency, rates)
     }
 }
