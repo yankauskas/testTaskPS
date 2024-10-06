@@ -5,6 +5,6 @@ import org.yankauskas.pstest.domain.model.Resource
 import org.yankauskas.pstest.domain.repository.ExchangeRepository
 
 
-class StartPollingUseCaseImpl(private val repository: ExchangeRepository) {
+class StartPollingUseCase(private val repository: ExchangeRepository) {
     operator fun invoke(): Flow<Resource<Unit>> = repository.startPollingRates()
 }

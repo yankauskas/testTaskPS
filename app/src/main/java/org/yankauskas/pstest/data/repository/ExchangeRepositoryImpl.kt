@@ -30,8 +30,7 @@ class ExchangeRepositoryImpl(
     private val _rates = MutableStateFlow(RatesSet.EMPTY)
     override val rates: StateFlow<RatesSet> = _rates.asStateFlow()
 
-    private val _wallets =
-        MutableStateFlow(walletSetFactory.createWalletSet().associateWith { BigDecimal.ZERO })
+    private val _wallets = MutableStateFlow(walletSetFactory.createWalletSet())
     override val wallets: StateFlow<Map<Currency, BigDecimal>> = _wallets.asStateFlow()
 
     private val _transactions = MutableStateFlow(emptyList<Transaction>())
