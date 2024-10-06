@@ -32,7 +32,11 @@ class PerformOperationUseCase(
         val toAmount = operation.amount.multiply(rate)
 
         val transaction = Transaction(Date(), operation.from, operation.to, operation.amount, toAmount, fee)
-        repository.performTransaction(transaction)
+        try {
+            repository.performTransaction(transaction)
+        } catch (e: IllegalStateException) {
+            return ExchangeResult.Error(ExchangeError.Unknown(e.message ?: "Unknown error"))
+        }
 
         return ExchangeResult.Success(transaction)
     }

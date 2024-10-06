@@ -9,6 +9,6 @@ enum class Currency(val code: String) {
     UNDEFINED("");
 
     companion object {
-        fun fromCode(code: String): Currency = entries.firstOrNull { it.code == code } ?: UNDEFINED
+        infix fun fromCode(code: String): Currency = entries.firstOrNull { it.code == code } ?: UNDEFINED
     }
 }

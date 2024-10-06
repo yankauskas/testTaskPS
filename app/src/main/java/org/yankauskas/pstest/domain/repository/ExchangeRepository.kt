@@ -10,9 +10,9 @@ import java.math.BigDecimal
 
 interface ExchangeRepository {
     val rates: StateFlow<RatesSet>
-    val wallets: StateFlow<HashMap<Currency, BigDecimal>>
+    val wallets: StateFlow<Map<Currency, BigDecimal>>
     val transactions: StateFlow<List<Transaction>>
 
-    suspend fun startPollingRates(): Flow<Resource<Unit>>
+    fun startPollingRates(): Flow<Resource<Unit>>
     suspend fun performTransaction(transaction: Transaction)
 }
