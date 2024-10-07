@@ -9,7 +9,14 @@ import org.yankauskas.pstest.domain.util.ExchangeUtils
 import org.yankauskas.pstest.presentation.Config
 
 val domainModule = module {
-    single { ExchangeUtils(Config.Wallet.RATE_PRECISION_SCALE, 0.01.toBigDecimal(), Config.Wallet.RATE_EXPIRATION_TIME) }
+    single {
+        ExchangeUtils(
+            Config.Wallet.RATE_PRECISION_SCALE,
+            Config.Wallet.AMOUNT_PRECISION_SCALE,
+            Config.Wallet.BASE_FEE_RATE,
+            Config.Wallet.RATE_EXPIRATION_TIME
+        )
+    }
 
     factory { PerformOperationUseCase(get(), get()) }
     factory { StartPollingUseCase(get()) }

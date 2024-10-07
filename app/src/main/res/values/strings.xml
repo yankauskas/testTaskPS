@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">PS Test</string>
+    <string name="label_my_balances">"My balances"</string>
+    <string name="label_exchange">"Exchange"</string>
+    <string name="label_submit">"Submit"</string>
+    <string name="label_sell">"Sell"</string>
+    <string name="label_receive">"Receive"</string>
+
+    <string name="hint_sell">"Amount to sell"</string>
+
+    <string name="balance_value_f">"%1$s %2$s"</string>
+    <string name="picker_value">"%1$s 🔽"</string>
+
+    <string name="success_message_fee_f">"You have converted %1$s %2$s to %3$s %4$s. Commission Fee: %5$s %6$s."</string>
+    <string name="success_message_f">"You have converted %1$s %2$s to %3$s %4$s."</string>
+
+    <string name="error_message_undefined">"Error occurred. Please try again later."</string>
+    <string name="error_rate_expired">"Exchange rate has expired"</string>
+    <string name="error_same_currency">"You can't exchange the same currency"</string>
+    <string name="error_not_enough_balance_f">"You don't have enough balance. You need to have at least %1$s %2$s"</string>
+    <string name="error_no_rate_f">"Can't find the rate for pair %1$s %2$s"</string>
+    <string name="error_no_such_wallet">"Can't find the %1$s wallet"</string>
+    <string name="error_zero_amount">"You can't exchange zero %1$s"</string>
 </resources>

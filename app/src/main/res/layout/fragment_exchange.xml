@@ -1,12 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvMyBalances"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Exchange here"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:text="@string/label_my_balances"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWallets"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tvMyBalances" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvExchangeRates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_exchange"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@id/rvWallets" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvSell"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/label_sell"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvExchangeRates" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pickerSell"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingVertical="8dp"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="@id/tvSell"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvSell"
+        tools:text="EUR 🔽" />
+
+    <EditText
+        android:id="@+id/valueSell"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:background="@null"
+        android:gravity="end"
+        android:hint="@string/hint_sell"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@id/tvSell"
+        app:layout_constraintEnd_toStartOf="@id/pickerSell"
+        app:layout_constraintStart_toEndOf="@id/tvSell"
+        app:layout_constraintTop_toTopOf="@id/tvSell" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvReceive"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/label_receive"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSell" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/pickerReceive"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingVertical="8dp"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="@id/tvReceive"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvReceive"
+        tools:text="USD 🔽" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/valueReceive"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:gravity="end"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/tvReceive"
+        app:layout_constraintEnd_toStartOf="@id/pickerReceive"
+        app:layout_constraintStart_toEndOf="@id/tvReceive"
+        app:layout_constraintTop_toTopOf="@id/tvReceive"
+        tools:text="+110.0 USD" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnExchange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:text="@string/label_submit"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@id/tvReceive" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

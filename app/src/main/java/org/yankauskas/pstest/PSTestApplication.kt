@@ -7,6 +7,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.yankauskas.pstest.presentation.di.dataModule
 import org.yankauskas.pstest.presentation.di.domainModule
+import org.yankauskas.pstest.presentation.di.presentationModule
 
 class PSTestApplication : Application() {
     override fun onCreate() {
@@ -18,7 +19,7 @@ class PSTestApplication : Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@PSTestApplication)
-            modules(dataModule, domainModule)
+            modules(dataModule, domainModule, presentationModule)
         }
     }
 }

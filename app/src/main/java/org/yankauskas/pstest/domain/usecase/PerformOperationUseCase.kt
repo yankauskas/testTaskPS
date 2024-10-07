@@ -14,6 +14,7 @@ class PerformOperationUseCase(
     private val exchangeUtils: ExchangeUtils
 ) {
     suspend operator fun invoke(operation: Operation): ExchangeResult {
+        if (operation.amount <= BigDecimal.ZERO) return ExchangeResult.Error(ExchangeError.ZeroAmount(operation.from))
         val rates = repository.rates.value
         val wallets = repository.wallets.value
         val fromWallet =
@@ -27,9 +28,9 @@ class PerformOperationUseCase(
         if (operation.from == operation.to) return ExchangeResult.Error(ExchangeError.SameCurrency)
         if (exchangeUtils.isRateExpired(rates)) return ExchangeResult.Error(ExchangeError.RateExpired)
         if (rate == BigDecimal.ZERO) return ExchangeResult.Error(ExchangeError.NoRate(operation.from, operation.to))
-        if (fromWallet < fromAmount) return ExchangeResult.Error(ExchangeError.InsufficientFunds(fromAmount))
+        if (fromWallet < fromAmount) return ExchangeResult.Error(ExchangeError.InsufficientFunds(operation.from, fromAmount))
 
-        val toAmount = operation.amount.multiply(rate)
+        val toAmount = exchangeUtils.getExchangeAmount(operation.amount, rate)
 
         val transaction = Transaction(Date(), operation.from, operation.to, operation.amount, toAmount, fee)
         try {
