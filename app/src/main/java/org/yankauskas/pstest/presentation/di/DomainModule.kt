@@ -11,10 +11,12 @@ import org.yankauskas.pstest.presentation.Config
 val domainModule = module {
     single {
         ExchangeUtils(
-            Config.Wallet.RATE_PRECISION_SCALE,
-            Config.Wallet.AMOUNT_PRECISION_SCALE,
-            Config.Wallet.BASE_FEE_RATE,
-            Config.Wallet.RATE_EXPIRATION_TIME
+            ratePrecisionScale = Config.Wallet.RATE_PRECISION_SCALE,
+            amountPrecisionScale = Config.Wallet.AMOUNT_PRECISION_SCALE,
+            baseCurrency = Config.Wallet.BASE_CURRENCY,
+            rateExpirationTime = Config.Rate.RATE_EXPIRATION_TIME,
+            baseFeeRate = Config.Rate.BASE_FEE_RATE,
+            feePromos = Config.Rate.promoList
         )
     }
 

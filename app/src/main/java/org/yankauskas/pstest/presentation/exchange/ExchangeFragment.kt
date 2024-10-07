@@ -102,7 +102,7 @@ class ExchangeFragment : Fragment() {
     }
 
     private fun processSuccess(transaction: Transaction) = with(transaction) {
-        if (fee == BigDecimal.ZERO) {
+        if (fee <= BigDecimal.ZERO) {
             Toast.makeText(
                 requireContext(),
                 getString(R.string.success_message_f, toAmount, toCurrency.code, fromAmount, fromCurrency.code),

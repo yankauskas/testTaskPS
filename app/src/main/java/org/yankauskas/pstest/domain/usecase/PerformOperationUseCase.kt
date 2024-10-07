@@ -22,7 +22,7 @@ class PerformOperationUseCase(
         wallets.getOrDefault(operation.to, null) ?: return ExchangeResult.Error(ExchangeError.NoSuchWallet(operation.to))
         val rate = exchangeUtils.getRate(rates, operation.from, operation.to)
         val transactionsNumber = repository.transactions.value.size + 1
-        val fee = exchangeUtils.getFee(operation, transactionsNumber)
+        val fee = exchangeUtils.getFee(rates, operation, transactionsNumber)
         val fromAmount = operation.amount + fee
 
         if (operation.from == operation.to) return ExchangeResult.Error(ExchangeError.SameCurrency)

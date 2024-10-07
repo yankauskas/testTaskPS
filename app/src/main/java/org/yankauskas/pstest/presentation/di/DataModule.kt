@@ -38,7 +38,7 @@ val dataModule = module {
         object : WalletSetFactory {
             override fun createWalletSet(): Map<Currency, BigDecimal> {
                 return Config.Wallet.WALLET_SET.map { Currency(it) }.associateWith { BigDecimal.ZERO } +
-                        (Currency(Config.Wallet.BASE_CURRENCY) to Config.Wallet.BASE_BALANCE)
+                        (Config.Wallet.BASE_CURRENCY to Config.Wallet.BASE_BALANCE)
             }
         }
     }
