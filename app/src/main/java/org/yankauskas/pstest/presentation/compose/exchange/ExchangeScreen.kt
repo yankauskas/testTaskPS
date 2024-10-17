@@ -1,5 +1,6 @@
 package org.yankauskas.pstest.presentation.compose.exchange
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,12 +9,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,9 +51,21 @@ fun ExchangeScreen(
         } ?: viewModel.watchOperation(BigDecimal.ZERO)
     }
 
+    val onFromCurrencySelected: (Currency) -> Unit = { viewModel.pickFromCurrency(it) }
+    val onToCurrencySelected: (Currency) -> Unit = { viewModel.pickToCurrency(it) }
+
     Column(modifier = modifier.padding(horizontal = 8.dp)) {
         WalletsList(wallets.value)
-        ExchangeBlock(fromCurrency.value, toCurrency.value, amount.value, onSellAmountChange, modifier = Modifier.padding(top = 16.dp))
+        ExchangeBlock(
+            fromCurrency.value,
+            toCurrency.value,
+            amount.value,
+            wallets.value.keys,
+            onSellAmountChange,
+            onFromCurrencySelected,
+            onToCurrencySelected,
+            modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }
 
@@ -77,7 +93,10 @@ fun ExchangeBlock(
     fromCurrency: Currency,
     toCurrency: Currency,
     receiveAmount: BigDecimal,
+    currencies: Set<Currency>,
     onSellAmountChange: (String) -> Unit,
+    onFromCurrencySelected: (Currency) -> Unit,
+    onToCurrencySelected: (Currency) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -107,7 +126,7 @@ fun ExchangeBlock(
                     .weight(1f),
                 placeholder = { Text(text = stringResource(id = R.string.hint_sell)) }
             )
-            CurrencyPicker(fromCurrency, modifier = Modifier.align(Alignment.CenterVertically))
+            CurrencyPicker(fromCurrency, currencies, onFromCurrencySelected, modifier = Modifier.align(Alignment.CenterVertically))
         }
         Row(modifier = Modifier.padding(top = 8.dp)) {
             Text(
@@ -126,19 +145,45 @@ fun ExchangeBlock(
                     .weight(1f)
                     .align(Alignment.CenterVertically),
             )
-            CurrencyPicker(toCurrency, modifier = Modifier.align(Alignment.CenterVertically))
+            CurrencyPicker(toCurrency, currencies, onToCurrencySelected, modifier = Modifier.align(Alignment.CenterVertically))
         }
     }
 }
 
 @Composable
-fun CurrencyPicker(currency: Currency, modifier: Modifier = Modifier) {
+fun CurrencyPicker(currency: Currency, currencies: Set<Currency>, onCurrencySelected: (Currency) -> Unit, modifier: Modifier = Modifier) {
+    val showDialog = remember { mutableStateOf(false) }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(text = "Close")
+                }
+            },
+            text = {
+                Column {
+                    currencies.forEach { currency ->
+                        TextButton(onClick = {
+                            onCurrencySelected(currency)
+                            showDialog.value = false
+                        }) {
+                            Text(text = currency.code)
+                        }
+                    }
+                }
+            }
+        )
+    }
+
     Text(
         text = stringResource(id = R.string.picker_value, currency.code),
         textAlign = TextAlign.End,
         modifier = modifier
             .padding(vertical = 8.dp)
             .width(60.dp)
+            .clickable { showDialog.value = true }
     )
 }
 
@@ -156,7 +201,6 @@ fun WalletItemPreview() {
 @Composable
 @Preview(showBackground = true)
 fun WalletsListPreview() {
-
     WalletsList(
         mapOf(
             Currency("EUR") to BigDecimal(100),
@@ -170,11 +214,16 @@ fun WalletsListPreview() {
 @Composable
 @Preview(showBackground = true)
 fun ExchangeBlockPreview() {
-    ExchangeBlock(Currency("EUR"), Currency("USD"), BigDecimal(100), {}, modifier = Modifier.width(300.dp))
+    ExchangeBlock(Currency("EUR"), Currency("USD"), BigDecimal(100), setOf(), {}, {}, {}, modifier = Modifier.width(300.dp))
 }
 
 @Composable
 @Preview(showBackground = true)
 fun CurrencyPickerPreview() {
-    CurrencyPicker(Currency("EUR"))
+    CurrencyPicker(
+        Currency("EUR"),
+        setOf(Currency("EUR"), Currency("USD"), Currency("GBP")),
+        onCurrencySelected = {},
+        modifier = Modifier.width(300.dp)
+    )
 }
