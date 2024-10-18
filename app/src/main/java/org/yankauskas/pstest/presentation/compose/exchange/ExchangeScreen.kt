@@ -94,7 +94,7 @@ fun ExchangeScreen(
 
     val onPerformOperation: () -> Unit = { viewModel.performOperation() }
 
-    Column(modifier = modifier.padding(horizontal = 8.dp)) {
+    Column(modifier = modifier.padding(horizontal = 16.dp)) {
         WalletsList(wallets.value)
         ExchangeBlock(
             fromCurrency.value,
@@ -190,15 +190,32 @@ fun ExchangeBlock(
                     .width(80.dp)
                     .align(Alignment.CenterVertically)
             )
-            Text(
-                text = receiveAmount.toPlainString(),
-                fontWeight = FontWeight.Bold,
-                color = colorResource(id = R.color.green),
-                textAlign = TextAlign.End,
+            TextField(
+                value = receiveAmount.toString(),
+                onValueChange = {},
+                enabled = false,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier
                     .padding(start = 12.dp, end = 12.dp)
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
+                    .weight(1f),
+                placeholder = {
+                    Text(
+                        text = stringResource(id = R.string.hint_sell),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End
+                    )
+                },
+                singleLine = true,
+                textStyle = LocalTextStyle.current.copy(
+                    textAlign = TextAlign.End,
+                    color = colorResource(id = R.color.green),
+                    fontWeight = FontWeight.Bold
+                ),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    disabledBorderColor = Color.Transparent
+                )
             )
             CurrencyPicker(toCurrency, currencies, onToCurrencySelected, modifier = Modifier.align(Alignment.CenterVertically))
         }
@@ -272,7 +289,24 @@ fun ProcessOperationSuccess(transaction: Transaction) {
 
 @Composable
 fun ProcessOperationError(error: ExchangeError) {
-    // show error message
+    with(error) {
+        when (this) {
+            is ExchangeError.RateExpired -> ShowToast(stringResource(id = R.string.error_rate_expired))
+            is ExchangeError.SameCurrency -> ShowToast(stringResource(id = R.string.error_same_currency))
+            is ExchangeError.NoRate -> ShowToast(
+                stringResource(id = R.string.error_no_rate_f, fromCurrency.code, toCurrency.code)
+            )
+
+            is ExchangeError.InsufficientFunds ->
+                ShowToast(stringResource(id = R.string.error_not_enough_balance_f, fromCurrency.code, amount))
+
+            is ExchangeError.NoSuchWallet ->
+                ShowToast(stringResource(id = R.string.error_no_such_wallet, currency.code))
+
+            is ExchangeError.ZeroAmount -> ShowToast(stringResource(id = R.string.error_zero_amount, currency.code))
+            is ExchangeError.Unknown -> ShowToast(message.takeIf { it.isNotEmpty() } ?: stringResource(R.string.error_message_undefined))
+        }
+    }
 }
 
 @Composable
