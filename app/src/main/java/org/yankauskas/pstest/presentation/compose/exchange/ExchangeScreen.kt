@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -36,6 +37,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import org.yankauskas.pstest.R
 import org.yankauskas.pstest.domain.model.Currency
 import org.yankauskas.pstest.domain.model.ExchangeError
@@ -227,26 +229,22 @@ fun CurrencyPicker(currency: Currency, currencies: Set<Currency>, onCurrencySele
     val showDialog = remember { mutableStateOf(false) }
 
     if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = { showDialog.value = false },
-            confirmButton = {
-                TextButton(onClick = { showDialog.value = false }) {
-                    Text(text = "Close")
-                }
-            },
-            text = {
+        Dialog(
+            onDismissRequest = { showDialog.value = false }){
+            Surface(modifier = Modifier.fillMaxWidth().padding(40.dp),
+                shape = RoundedCornerShape(10.dp)) {
                 Column {
                     currencies.forEach { currency ->
                         TextButton(onClick = {
                             onCurrencySelected(currency)
                             showDialog.value = false
-                        }) {
+                        }, modifier = Modifier.fillMaxWidth()) {
                             Text(text = currency.code)
                         }
                     }
                 }
             }
-        )
+            }
     }
 
     Text(
